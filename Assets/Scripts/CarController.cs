@@ -1,26 +1,21 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-/// <summary>
-/// Fast F1-style controller tuned around stability at high speed.
-/// Uses WheelColliders for contact, with assists layered on top instead of
-/// relying on unrealistic torque values.
-///</summary>
 [DisallowMultipleComponent]
 [RequireComponent(typeof(Rigidbody))]
 public class CarController : MonoBehaviour
 {
     [Header("Wheel Colliders")]
-    [FormerlySerializedAs("FL")] public WheelCollider frontLeft;
-    [FormerlySerializedAs("FR")] public WheelCollider frontRight;
-    [FormerlySerializedAs("RL")] public WheelCollider rearLeft;
-    [FormerlySerializedAs("RR")] public WheelCollider rearRight;
+    public WheelCollider frontLeft;
+     public WheelCollider frontRight; 
+     public WheelCollider rearLeft;
+     public WheelCollider rearRight;
 
     [Header("Wheel Meshes")]
-    [FormerlySerializedAs("FLMesh")] public Transform frontLeftMesh;
-    [FormerlySerializedAs("FRMesh")] public Transform frontRightMesh;
-    [FormerlySerializedAs("RLMesh")] public Transform rearLeftMesh;
-    [FormerlySerializedAs("RRMesh")] public Transform rearRightMesh;
+     public Transform frontLeftMesh;
+     public Transform frontRightMesh;
+     public Transform rearLeftMesh;
+     public Transform rearRightMesh;
 
     [Header("Wheel Visual Rotation Offset")]
     public Vector3 wheelRotationOffset = new Vector3(0f, 0f, 90f);
@@ -91,8 +86,7 @@ public class CarController : MonoBehaviour
     [Header("Anti-Roll")]
      public float frontAntiRoll = 3200f;
     public float rearAntiRoll = 3800f;
-    [Header("Vehicle Physics")]
-    [FormerlySerializedAs("performanceMass")]
+    [Header("Vehicle Physics")] 
     public float vehicleMass = 760f;
 
     public float centerOfMassYOffset = -0.6f;
@@ -741,6 +735,7 @@ public class CarController : MonoBehaviour
         drsActivationSpeed = Mathf.Max(0f, drsActivationSpeed);
         drsDragReduction = Mathf.Clamp01(drsDragReduction);
         drsDownforceReduction = Mathf.Clamp01(drsDownforceReduction);
-        EnsureTransmissionData();
+        EnsureTransmissionData(); 
     }
 }
+
