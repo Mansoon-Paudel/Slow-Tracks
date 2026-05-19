@@ -1663,6 +1663,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2649c8225404c2bb17f812b74589801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarTelemetryHUD
+  trackWaypoints:
+  - {fileID: 549823699}
+  - {fileID: 271062420}
+  - {fileID: 72648807}
+  - {fileID: 866074926}
+  - {fileID: 1437380155}
+  - {fileID: 85347856}
+  - {fileID: 1165956482}
 --- !u!1 &1411953716
 GameObject:
   m_ObjectHideFlags: 0
