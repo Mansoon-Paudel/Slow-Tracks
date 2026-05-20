@@ -47,7 +47,7 @@ public class CarTelemetryHUD : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter(Collider other)
     {
         if (!_lapFinished && other.CompareTag("End"))
         {
@@ -74,7 +74,6 @@ public class CarTelemetryHUD : MonoBehaviour
             _minimapTex.Apply();
             return;
         }
-
         float minX = float.MaxValue, maxX = float.MinValue;
         float minZ = float.MaxValue, maxZ = float.MinValue;
         foreach (var wp in trackWaypoints)
@@ -270,7 +269,6 @@ public class CarTelemetryHUD : MonoBehaviour
         GUI.color = new Color(0.6f, 0.6f, 0.6f, 1f);
         GUI.DrawTexture(new Rect(tail.x - 2, tail.y - 2, 4, 4), Texture2D.whiteTexture);
         GUI.color = Color.white;
-
         GUI.Label(new Rect(r.x, r.y + r.height - 15f, r.width, 12f),
             $"{(int)heading:000}°", Txt(8, MUTED, a: TextAnchor.MiddleCenter));
     }
@@ -305,6 +303,22 @@ public class CarTelemetryHUD : MonoBehaviour
             float dotX = (x0 + x1) / 2f, dotY = (y0 + y1) / 2f;
             GUI.color = Color.gray2;
             GUI.DrawTexture(new Rect(dotX - 1.5f, dotY - 1.5f, 3, 3), Texture2D.whiteTexture);
+        }
+        float needleAngle  = steerInput * (ARC_RANGE / 2f) * Mathf.Deg2Rad;
+        float needleLength = arcRadius - 4f;
+        float tipX = arcCX + Mathf.Sin(needleAngle) * needleLength;
+        float tipY = arcCY - Mathf.Cos(needleAngle) * needleLength;
+        Color needleCol = Mathf.Abs(steerInput) < 0.05f ? Color.white
+            : steerInput < 0f ? BLUE_Hi : RED_HOT;
+
+        const int NEEDLE_STEPS = 12;
+        for (int i = 0; i <= NEEDLE_STEPS; i++)
+        {
+            float t  = (float)i / NEEDLE_STEPS;
+            float px = Mathf.Lerp(arcCX, tipX, t);
+            float py = Mathf.Lerp(arcCY, tipY, t);
+            GUI.color = needleCol;
+            GUI.DrawTexture(new Rect(px - 1.5f, py - 1.5f, 3, 3), Texture2D.whiteTexture);
         }
 
         GUI.color = Color.white;
@@ -353,6 +367,11 @@ public class CarTelemetryHUD : MonoBehaviour
         DrawSteeringIndicator(new Rect(mx, my + 14 + MH + 4f, steerW, steerH), steerInput);
         const float CW = 90;
         float rx = mx - CW - 8;
+        float speedBlockRight = lx + 100f;
+        float compassSize     = 80f; 
+        float gapCX = speedBlockRight + (rx - speedBlockRight) / 2f;
+        float gapCY = PY + 14f + (90f / 2f) - (compassSize / 2f);
+        DrawCompass(new Rect(gapCX - compassSize / 2f, gapCY, compassSize, compassSize));
         
         Rect gchip = new Rect(rx, PY + 12, CW, 52);
         GUI.Box(gchip, GUIContent.none, top ? _chipBoxDanger : _chipbox);
@@ -421,7 +440,6 @@ public class CarTelemetryHUD : MonoBehaviour
         }
         GUI.color = Color.white;
     }
-
     private void DrawTile(Rect r, string lbl, string val, Color valCol)
     {
         GUI.Box(r, GUIContent.none, _chipbox);
