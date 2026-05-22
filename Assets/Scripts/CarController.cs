@@ -10,18 +10,18 @@ public class CarController : MonoBehaviour
      public WheelCollider frontRight; 
      public WheelCollider rearLeft;
      public WheelCollider rearRight;
-
+     
     [Header("Wheel Meshes")]
      public Transform frontLeftMesh;
      public Transform frontRightMesh;
      public Transform rearLeftMesh;
      public Transform rearRightMesh;
-
     [Header("Wheel Visual Rotation Offset")]
-    public Vector3 wheelRotationOffset = new Vector3(0f, 0f, 90f);
+    public Vector3 wheelRotationOffset = Vector3.zero;
 
     [Header("Power")]
     public float motorTorque = 3600f;
+    
     
     public float reverseTorque = 1600f;
     
@@ -33,7 +33,6 @@ public class CarController : MonoBehaviour
 
     [Range(0f, 0.75f)]
     public float launchSoftening = 0.3f;
-
     [Header("Braking")]
     public float brakeTorque = 9000f;
 
@@ -614,7 +613,11 @@ public class CarController : MonoBehaviour
             if (mesh == null) continue;
 
             wheels[i].GetWorldPose(out Vector3 position, out Quaternion rotation);
-            mesh.SetPositionAndRotation(position, rotation * Quaternion.Euler(wheelRotationOffset));
+            // Apply mesh transform exactly as the WheelCollider provides.
+            // Removed the previous additional 90-degree rotation so wheels won't turn
+            // unexpectedly in the editor/runtime. The optional `wheelRotationOffset`
+            // can still be used if a model needs adjustment.
+            mesh.SetPositionAndRotation(position, rotation);
         }
     }
 

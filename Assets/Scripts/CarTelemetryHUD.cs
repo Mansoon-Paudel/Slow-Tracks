@@ -186,14 +186,12 @@ public class CarTelemetryHUD : MonoBehaviour
             }
         };
     }
-
     private GUIStyle Txt(int sz, Color col, bool bold = false, TextAnchor a = TextAnchor.MiddleLeft) => new GUIStyle
     {
         fontSize = sz,
         fontStyle = bold ? FontStyle.Bold : FontStyle.Normal,
         alignment = a,
         normal = { textColor = col }
-
     };
     private void EnsureStyles()
     {
@@ -320,11 +318,9 @@ public class CarTelemetryHUD : MonoBehaviour
             GUI.color = needleCol;
             GUI.DrawTexture(new Rect(px - 1.5f, py - 1.5f, 3, 3), Texture2D.whiteTexture);
         }
-
         GUI.color = Color.white;
         GUI.DrawTexture(new Rect(arcCX - 3, arcCY - arcRadius - 3, 6, 6), Texture2D.whiteTexture);
         GUI.color = Color.white;
-
         int angleDeg = Mathf.RoundToInt(steerInput * ARC_RANGE / 2);
         string lbl     = Mathf.Abs(steerInput) < 0.02f ? "0°"
             : steerInput < 0f ? $"L {Mathf.Abs(angleDeg)}°" : $"R {angleDeg}°";
